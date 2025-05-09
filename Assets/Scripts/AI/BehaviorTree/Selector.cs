@@ -12,7 +12,7 @@ public class Selector : InteriorNode
 
             if (res == Result.SUCCESS)
             {
-                current_child = 0;  // Reset child index
+                current_child = 0;
                 Debug.Log("Selector returning SUCCESS.");
                 return Result.SUCCESS;
             }
@@ -25,7 +25,7 @@ public class Selector : InteriorNode
             current_child++;
         }
 
-        current_child = 0;  // Reset child index if all fail
+        current_child = 0;
         Debug.Log("Selector returning FAILURE.");
         return Result.FAILURE;
     }

@@ -21,7 +21,13 @@ public class InteriorNode : BehaviorTree
         }
         return new_children;
     }
+    public override BehaviorTree Copy()
+    {
+        InteriorNode copy = (InteriorNode)this.MemberwiseClone();
 
+        copy.children = this.CopyChildren();
+        return copy;
+    }
     public override IEnumerable<BehaviorTree> AllNodes()
     {
         yield return this;
