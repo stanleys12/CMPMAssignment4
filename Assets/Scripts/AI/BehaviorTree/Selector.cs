@@ -18,11 +18,12 @@ public class Selector : InteriorNode
             }
             if (res == Result.IN_PROGRESS)
             {
+                // Don't increment current_child — we want to re-run this same child next frame
                 Debug.Log("Selector returning IN_PROGRESS.");
                 return Result.IN_PROGRESS;
             }
-            
-            current_child++;
+
+            current_child++; // Only increment if FAILURE
         }
 
         current_child = 0;
@@ -30,10 +31,7 @@ public class Selector : InteriorNode
         return Result.FAILURE;
     }
 
-
-    public Selector(IEnumerable<BehaviorTree> children) : base(children)
-    {
-    }
+    public Selector(IEnumerable<BehaviorTree> children) : base(children) { }
 
     public override BehaviorTree Copy()
     {

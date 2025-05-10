@@ -2,10 +2,9 @@ public class WaitForGameTime : BehaviorTree
 {
     private float targetTime;
 
-    // Constructor accepts the time you want to wait until (e.g., 200 seconds)
-    public WaitForGameTime(float targetTime)
+    public WaitForGameTime(float timeToWait)
     {
-        this.targetTime = targetTime;
+        targetTime = timeToWait;
     }
 
     public override Result Run()
@@ -14,7 +13,6 @@ public class WaitForGameTime : BehaviorTree
         {
             return Result.SUCCESS;
         }
-
         return Result.IN_PROGRESS;
     }
 
