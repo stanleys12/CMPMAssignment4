@@ -11,7 +11,7 @@ public class BehaviorTree
     {
         return Result.SUCCESS;
     }
-
+    public virtual void OnStart() {}
     public BehaviorTree()
     {
 

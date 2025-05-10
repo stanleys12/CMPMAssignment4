@@ -18,13 +18,13 @@ public class EnemyController : MonoBehaviour
 
     public BehaviorTree behavior;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
-        
         target = GameManager.Instance.player.transform;
         hp.OnDeath += Die;
         healthui.SetHealth(hp);
-        
+
         GetComponent<Unit>().speed = speed;
         pips = new List<GameObject>();
     }
