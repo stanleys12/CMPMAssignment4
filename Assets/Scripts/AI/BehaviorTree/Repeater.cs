@@ -12,9 +12,15 @@ public class Repeater : BehaviorTree
 
     public override Result Run()
     {
-        child.Run();  // Continuously run the child node
+        Result result = child.Run();
+        if (result != Result.IN_PROGRESS)
+        {
+            child = child.Copy(); 
+            child.SetAgent(agent); 
+        }
         return Result.IN_PROGRESS;
     }
+
 
     public override BehaviorTree Copy()
     {

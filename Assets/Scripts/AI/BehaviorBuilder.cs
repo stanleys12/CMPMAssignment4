@@ -6,8 +6,8 @@ public class BehaviorBuilder
     {
         BehaviorTree result = null;
 
-        Vector3 waypoint = new Vector3(49.6f, -23.3f, 0f);
-        Vector3 alternate_waypoint = new Vector3(-3.4f, -19.2f, 0f);
+        Vector3 waypoint = new Vector3(49.6f+ Random.Range(-2f, 2f), -23.3f+ Random.Range(-2f, 2f), 0f);
+        Vector3 alternate_waypoint = new Vector3(1.4f+ Random.Range(-2f, 2f), -19.2f+ Random.Range(-2f, 2f), 0f);
 
         float distanceToBottomLeft = Vector3.Distance(agent.transform.position, alternate_waypoint);
         float distanceToBottomRight = Vector3.Distance(agent.transform.position, waypoint);
@@ -20,46 +20,57 @@ public class BehaviorBuilder
         float distanceToBottomRight2 = Vector3.Distance(agent.transform.position, warlock_waypoint1);
         Vector3 chosenWaypoint_w = (distanceToBottomLeft1 < distanceToBottomRight2) ? warlock_waypoint2 : warlock_waypoint1;
 
-
+        Vector3 groupup = new Vector3(20f+ Random.Range(-2f, 2f), 5f+ Random.Range(-2f, 2f), 0f);
 
         Vector3 zombie_waypoint = new Vector3(15.3f + Random.Range(-2f, 2f), 28f + Random.Range(-2f, 2f), 0f + Random.Range(-2f, 2f));
         Vector3 skeleton_waypoint = new Vector3(47.6f + Random.Range(-2f, 2f), -22.3f + Random.Range(-2f, 2f), 0f + Random.Range(-2f, 2f));
 
-        BehaviorTree combatLoop = new Repeater(new Sequence(new BehaviorTree[] {
+        BehaviorTree combatLoop = new Sequence(new BehaviorTree[] {
             new MoveToPlayer(agent.GetAction("attack").range),
             new Attack()
-        }));
+        });
+
+        BehaviorTree buffBehavior = new Sequence(new BehaviorTree[] {
+            new AbilityReadyQuery("buff"),
+            new Buff() 
+        });
+
+        BehaviorTree healBehavior = new Sequence(new BehaviorTree[] {
+            new StrengthFactorQuery(0.5f),
+            new Heal()
+        });
         if (agent.monster == "warlock")
         {
             result = new Sequence(new BehaviorTree[] {
-                                        new MoveToWaypoint(chosenWaypoint_w),
-                                        new WaitForGameTime(GameManager.Instance.WinTime() - 298f),
-                                        combatLoop,
-                                        new PermaBuff(),
-                                        new Heal(),
-                                        new Buff()
-                                     });
+                new MoveToWaypoint(chosenWaypoint_w),
+                new WaitForGameTime(GameManager.Instance.WinTime() - 300f), 
+                buffBehavior, 
+                combatLoop,
+                new PermaBuff(),
+                healBehavior
+            });
         }
         else if (agent.monster == "zombie")
         {
             result = new Sequence(new BehaviorTree[] {
                                         new MoveToWaypoint(chosenWaypoint),
-                                        new WaitForGameTime(GameManager.Instance.WinTime() - 303f),
+                                        new WaitForGameTime(GameManager.Instance.WinTime() - 320f),
+                                        new MoveToWaypoint(groupup),
                                         combatLoop,
-                                        new MoveToPlayer(agent.GetAction("attack").range),
+                                        //new MoveToPlayer(agent.GetAction("attack").range),
 
-                                        new Attack() // Keep attacking as long as the target is alive
+                                        //new Attack()
                                      });
         }
         else
         {
             result = new Sequence(new BehaviorTree[] {
                                         new MoveToWaypoint(chosenWaypoint),
-                                        new WaitForGameTime(GameManager.Instance.WinTime() - 300f),
+                                        new WaitForGameTime(GameManager.Instance.WinTime() - 310f),
                                         combatLoop,
-                                        new MoveToPlayer(agent.GetAction("attack").range),
+                                        //new MoveToPlayer(agent.GetAction("attack").range),
 
-                                        new Attack() // Keep attacking as long as the target is alive
+                                        //new Attack()
                                      });
         }
 
@@ -70,4 +81,6 @@ public class BehaviorBuilder
         }
         return result;
     }
+
+    
 }

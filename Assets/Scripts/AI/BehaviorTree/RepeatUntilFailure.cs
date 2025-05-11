@@ -10,15 +10,14 @@ public class RepeatUntilFailure : BehaviorTree
 
     public override Result Run()
     {
-        // Continuously run the child node until it fails
         Result result = child.Run();
 
         if (result == Result.FAILURE)
         {
-            return Result.FAILURE;  // Stop repeating if failure occurs
+            return Result.FAILURE;
         }
 
-        return Result.IN_PROGRESS;  // Keep running the child node as long as it doesn't fail
+        return Result.IN_PROGRESS;
     }
 
     public override BehaviorTree Copy()
